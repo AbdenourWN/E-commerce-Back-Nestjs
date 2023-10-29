@@ -1,0 +1,762 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/products": {
+      "get": {
+        "operationId": "ProductsController_findAll",
+        "parameters": [],
+        "responses": { "200": { "description": "" } },
+        "tags": ["products"]
+      },
+      "post": {
+        "operationId": "ProductsController_createProduct",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateProductDto" }
+            }
+          }
+        },
+        "responses": { "201": { "description": "" } },
+        "tags": ["products"],
+        "security": [{ "bearer": [] }]
+      }
+    },
+    "/products/{id}": {
+      "get": {
+        "operationId": "ProductsController_getProductbyId",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["products"]
+      },
+      "put": {
+        "operationId": "ProductsController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateProductDto" }
+            }
+          }
+        },
+        "responses": { "200": { "description": "" } },
+        "tags": ["products"],
+        "security": [{ "bearer": [] }]
+      },
+      "delete": {
+        "operationId": "ProductsController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["products"],
+        "security": [{ "bearer": [] }]
+      }
+    },
+    "/categories": {
+      "get": {
+        "operationId": "CategoryController_findAll",
+        "parameters": [],
+        "responses": { "200": { "description": "" } },
+        "tags": ["categories"],
+        "security": [{ "bearer": [] }]
+      },
+      "post": {
+        "operationId": "CategoryController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateCategoryDto" }
+            }
+          }
+        },
+        "responses": { "201": { "description": "" } },
+        "tags": ["categories"],
+        "security": [{ "bearer": [] }]
+      }
+    },
+    "/categories/{id}": {
+      "get": {
+        "operationId": "CategoryController_getById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["categories"],
+        "security": [{ "bearer": [] }]
+      },
+      "put": {
+        "operationId": "CategoryController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateCategoryDto" }
+            }
+          }
+        },
+        "responses": { "200": { "description": "" } },
+        "tags": ["categories"],
+        "security": [{ "bearer": [] }]
+      },
+      "delete": {
+        "operationId": "CategoryController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["categories"],
+        "security": [{ "bearer": [] }]
+      }
+    },
+    "/subcategories": {
+      "get": {
+        "operationId": "SubcategoryController_findAll",
+        "parameters": [],
+        "responses": { "200": { "description": "" } },
+        "tags": ["subcategories"]
+      },
+      "post": {
+        "operationId": "SubcategoryController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateSubcategoryDto" }
+            }
+          }
+        },
+        "responses": { "201": { "description": "" } },
+        "tags": ["subcategories"],
+        "security": [{ "bearer": [] }]
+      }
+    },
+    "/subcategories/{id}": {
+      "get": {
+        "operationId": "SubcategoryController_findById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["subcategories"]
+      },
+      "put": {
+        "operationId": "SubcategoryController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateSubcategoryDto" }
+            }
+          }
+        },
+        "responses": { "200": { "description": "" } },
+        "tags": ["subcategories"],
+        "security": [{ "bearer": [] }]
+      },
+      "delete": {
+        "operationId": "SubcategoryController_delete",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["subcategories"],
+        "security": [{ "bearer": [] }]
+      }
+    },
+    "/brands": {
+      "get": {
+        "operationId": "BrandController_findAll",
+        "parameters": [],
+        "responses": { "200": { "description": "" } },
+        "tags": ["brands"],
+        "security": [{ "bearer": [] }]
+      },
+      "post": {
+        "operationId": "BrandController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateBrandDto" }
+            }
+          }
+        },
+        "responses": { "201": { "description": "" } },
+        "tags": ["brands"],
+        "security": [{ "bearer": [] }]
+      }
+    },
+    "/brands/{id}": {
+      "get": {
+        "operationId": "BrandController_getById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["brands"],
+        "security": [{ "bearer": [] }]
+      },
+      "put": {
+        "operationId": "BrandController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateBrandDto" }
+            }
+          }
+        },
+        "responses": { "200": { "description": "" } },
+        "tags": ["brands"],
+        "security": [{ "bearer": [] }]
+      },
+      "delete": {
+        "operationId": "BrandController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["brands"],
+        "security": [{ "bearer": [] }]
+      }
+    },
+    "/orders": {
+      "post": {
+        "operationId": "OrderController_createOrder",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateOrderDto" }
+            }
+          }
+        },
+        "responses": { "201": { "description": "" } },
+        "tags": ["orders"]
+      },
+      "get": {
+        "operationId": "OrderController_getAllOrders",
+        "parameters": [],
+        "responses": { "200": { "description": "" } },
+        "tags": ["orders"]
+      }
+    },
+    "/orders/{id}": {
+      "get": {
+        "operationId": "OrderController_getOrderById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["orders"]
+      },
+      "put": {
+        "operationId": "OrderController_updateOrder",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateOrderDto" }
+            }
+          }
+        },
+        "responses": { "200": { "description": "" } },
+        "tags": ["orders"],
+        "security": [{ "bearer": [] }]
+      },
+      "delete": {
+        "operationId": "OrderController_deleteOrder",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["orders"],
+        "security": [{ "bearer": [] }]
+      }
+    },
+    "/reduction-codes": {
+      "post": {
+        "operationId": "ReductionCodeController_createReductionCode",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateReductionCodeDto"
+              }
+            }
+          }
+        },
+        "responses": { "201": { "description": "" } },
+        "tags": ["reduction-codes"],
+        "security": [{ "bearer": [] }]
+      },
+      "get": {
+        "operationId": "ReductionCodeController_getAllReductionCodes",
+        "parameters": [],
+        "responses": { "200": { "description": "" } },
+        "tags": ["reduction-codes"],
+        "security": [{ "bearer": [] }]
+      }
+    },
+    "/reduction-codes/{code}": {
+      "get": {
+        "operationId": "ReductionCodeController_getReductionCodeByCode",
+        "parameters": [
+          {
+            "name": "code",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["reduction-codes"]
+      },
+      "put": {
+        "operationId": "ReductionCodeController_updateReductionCode",
+        "parameters": [
+          {
+            "name": "code",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateReductionCodeDto"
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "" } },
+        "tags": ["reduction-codes"],
+        "security": [{ "bearer": [] }]
+      },
+      "delete": {
+        "operationId": "ReductionCodeController_deleteReductionCode",
+        "parameters": [
+          {
+            "name": "code",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["reduction-codes"],
+        "security": [{ "bearer": [] }]
+      }
+    },
+    "/gallery": {
+      "post": {
+        "operationId": "GalleryController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateGalleryDto" }
+            }
+          }
+        },
+        "responses": { "201": { "description": "" } },
+        "tags": ["gallery"],
+        "security": [{ "bearer": [] }]
+      },
+      "get": {
+        "operationId": "GalleryController_findAll",
+        "parameters": [],
+        "responses": { "200": { "description": "" } },
+        "tags": ["gallery"]
+      }
+    },
+    "/gallery/{id}": {
+      "get": {
+        "operationId": "GalleryController_findById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["gallery"],
+        "security": [{ "bearer": [] }]
+      },
+      "put": {
+        "operationId": "GalleryController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateGalleryDto" }
+            }
+          }
+        },
+        "responses": { "200": { "description": "" } },
+        "tags": ["gallery"],
+        "security": [{ "bearer": [] }]
+      },
+      "delete": {
+        "operationId": "GalleryController_delete",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["gallery"],
+        "security": [{ "bearer": [] }]
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "operationId": "AuthController_login",
+        "parameters": [],
+        "responses": { "201": { "description": "" } },
+        "tags": ["auth"]
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "operationId": "AuthController_register",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateUserDto" }
+            }
+          }
+        },
+        "responses": { "201": { "description": "" } },
+        "tags": ["auth"]
+      }
+    }
+  },
+  "info": {
+    "title": "API",
+    "description": "",
+    "version": "0.0.1",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": { "scheme": "bearer", "bearerFormat": "JWT", "type": "http" }
+    },
+    "schemas": {
+      "CreateProductDto": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "quantity": { "type": "number" },
+          "category": { "type": "string" },
+          "subcategory": { "type": "string" },
+          "image": { "type": "string" },
+          "promotion": { "type": "boolean" },
+          "promotionAmount": { "type": "number" },
+          "brand": { "type": "string" }
+        },
+        "required": [
+          "name",
+          "description",
+          "quantity",
+          "category",
+          "subcategory",
+          "image",
+          "promotion",
+          "promotionAmount",
+          "brand"
+        ]
+      },
+      "UpdateProductDto": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "quantity": { "type": "number" },
+          "category": { "type": "string" },
+          "subcategory": { "type": "string" },
+          "image": { "type": "string" },
+          "promotion": { "type": "boolean" },
+          "promotionAmount": { "type": "number" },
+          "brand": { "type": "string" }
+        },
+        "required": [
+          "name",
+          "description",
+          "quantity",
+          "category",
+          "subcategory",
+          "image",
+          "promotion",
+          "promotionAmount",
+          "brand"
+        ]
+      },
+      "CreateCategoryDto": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "image": { "type": "string" },
+          "subcategories": {
+            "description": "Array of Subcategory IDs",
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "required": ["name", "image", "subcategories"]
+      },
+      "UpdateCategoryDto": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "image": { "type": "string" },
+          "subcategories": {
+            "description": "Array of Subcategory IDs",
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "required": ["name", "image", "subcategories"]
+      },
+      "CreateSubcategoryDto": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "categoryId": { "type": "string", "description": "Category ID" }
+        },
+        "required": ["name", "categoryId"]
+      },
+      "UpdateSubcategoryDto": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "categoryId": { "type": "string", "description": "Category ID" }
+        },
+        "required": ["name", "categoryId"]
+      },
+      "CreateBrandDto": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "image": { "type": "string" }
+        },
+        "required": ["name", "image"]
+      },
+      "UpdateBrandDto": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "image": { "type": "string" }
+        },
+        "required": ["name", "image"]
+      },
+      "ShippingAddressDto": {
+        "type": "object",
+        "properties": {
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "address1": { "type": "string" },
+          "address2": { "type": "string" },
+          "city": { "type": "string" },
+          "state": { "type": "string" },
+          "zipCode": { "type": "string" },
+          "country": { "type": "string" }
+        },
+        "required": [
+          "firstName",
+          "lastName",
+          "address1",
+          "city",
+          "state",
+          "zipCode",
+          "country"
+        ]
+      },
+      "CreateOrderDto": {
+        "type": "object",
+        "properties": {
+          "products": {
+            "example": [{ "productId": "123", "quantity": 1, "price": 100 }],
+            "type": "array",
+            "items": { "type": "object" }
+          },
+          "totalAmount": { "type": "number" },
+          "orderDate": { "format": "date-time", "type": "string" },
+          "userId": { "type": "string" },
+          "shippingAddress": {
+            "$ref": "#/components/schemas/ShippingAddressDto"
+          }
+        },
+        "required": ["products", "totalAmount", "orderDate", "shippingAddress"]
+      },
+      "UpdateOrderDto": {
+        "type": "object",
+        "properties": {
+          "products": {
+            "example": [{ "productId": "123", "quantity": 1, "price": 100 }],
+            "type": "array",
+            "items": { "type": "object" }
+          },
+          "totalAmount": { "type": "number" },
+          "orderDate": { "format": "date-time", "type": "string" },
+          "userId": { "type": "string" },
+          "shippingAddress": {
+            "$ref": "#/components/schemas/ShippingAddressDto"
+          }
+        }
+      },
+      "CreateReductionCodeDto": { "type": "object", "properties": {} },
+      "UpdateReductionCodeDto": { "type": "object", "properties": {} },
+      "CreateGalleryDto": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string" },
+          "image": { "type": "string" }
+        },
+        "required": ["title", "image"]
+      },
+      "UpdateGalleryDto": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string" },
+          "image": { "type": "string" }
+        },
+        "required": ["title", "image"]
+      },
+      "CreateUserDto": {
+        "type": "object",
+        "properties": {
+          "username": { "type": "string" },
+          "email": { "type": "string" },
+          "password": { "type": "string" },
+          "roles": { "type": "string" }
+        },
+        "required": ["username", "email", "password", "roles"]
+      }
+    }
+  }
+}

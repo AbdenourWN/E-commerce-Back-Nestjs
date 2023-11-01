@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsNumber } from 'class-validator';
+import { IsOptional } from 'class-validator';
 
 export class UpdateProductDto {
   @IsOptional()
@@ -11,9 +11,8 @@ export class UpdateProductDto {
   description: string;
 
   @IsOptional()
-  @IsNumber()
-  @ApiProperty({ required: false })
-  quantity: number;
+  @ApiProperty({ required: false, default: '0' })
+  quantity: string;
 
   @IsOptional()
   @ApiProperty({ required: false })
@@ -31,9 +30,8 @@ export class UpdateProductDto {
   promotion: boolean;
 
   @IsOptional()
-  @IsNumber()
-  @ApiProperty({ required: false })
-  promotionAmount: number;
+  @ApiProperty({ required: false, default: '0' })
+  promotionAmount: string;
 
   @IsOptional()
   @ApiProperty({ required: false })

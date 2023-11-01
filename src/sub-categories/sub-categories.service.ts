@@ -25,7 +25,9 @@ export class SubcategoryService {
 
   async getAll(): Promise<Subcategory[]> {
     try {
-      return await this.SubcategoryModel.find().exec();
+      return await this.SubcategoryModel.find()
+        .populate({ path: 'categoryId', model: 'Category' })
+        .exec();
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -33,7 +35,9 @@ export class SubcategoryService {
 
   async getById(id: string): Promise<Subcategory> {
     try {
-      const subcategory = await this.SubcategoryModel.findById(id).exec();
+      const subcategory = await this.SubcategoryModel.findById(id)
+        .populate({ path: 'categoryId', model: 'Category' })
+        .exec();
       if (!subcategory) {
         throw new HttpException('Subcategory not found', HttpStatus.NOT_FOUND);
       }

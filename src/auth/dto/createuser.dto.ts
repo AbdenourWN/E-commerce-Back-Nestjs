@@ -4,7 +4,7 @@ import { IsEmail, IsNotEmpty, Length, NotContains } from 'class-validator';
 export class CreateUserDto {
   @IsNotEmpty()
   @ApiProperty()
-  @NotContains(' ', { message: "user name shouldn't countain white spaces" })
+  @NotContains(' ', { message: "username shouldn't contain white spaces" })
   username: string;
 
   @IsEmail()
@@ -18,5 +18,18 @@ export class CreateUserDto {
   @IsNotEmpty()
   @ApiProperty()
   roles: string;
+
+  @IsNotEmpty()
+  @ApiProperty()
+  telephone: string;
+
+  @IsNotEmpty()
+  @ApiProperty()
+  city: string;
+
+  @IsNotEmpty()
+  @ApiProperty()
+  address: string;
+
   _id;
 }

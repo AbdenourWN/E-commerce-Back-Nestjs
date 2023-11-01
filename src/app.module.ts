@@ -9,9 +9,16 @@ import { BrandModule } from './brands/brands.module';
 import { OrderModule } from './order/orders.module';
 import { ReductionCodeModule } from './reduction-code/reduction-code.module';
 import { GalleryModule } from './gallery/gallery.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+import { SettingsModule } from './settings/settings.module';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+      serveRoot: '/uploads',
+    }),
     ConfigModule.forRoot({
       envFilePath: '.env',
       isGlobal: true,
@@ -27,6 +34,7 @@ import { GalleryModule } from './gallery/gallery.module';
     OrderModule,
     ReductionCodeModule,
     GalleryModule,
+    SettingsModule,
     AuthModule,
   ],
   controllers: [],

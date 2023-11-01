@@ -8,7 +8,6 @@ import {
   Body,
   UseGuards,
   UseInterceptors,
-  Req,
   UploadedFile,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -27,9 +26,6 @@ import { imageFilter, storage } from 'src/multer.config';
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.Admin)
-  @ApiBearerAuth()
   @Get()
   findAll() {
     return this.categoryService.getAll();

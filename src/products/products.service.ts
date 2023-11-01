@@ -24,8 +24,11 @@ export class ProductsService {
         : null;
       const createdProduct = new this.ProductModel({
         ...createProductDto,
+        quantity: parseInt(createProductDto.quantity),
+        promotionAmount: parseFloat(createProductDto.promotionAmount),
         image: imageUrl,
       });
+
       return await createdProduct.save();
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
@@ -70,7 +73,12 @@ export class ProductsService {
         : product.image;
       const updatedProduct = await this.ProductModel.findByIdAndUpdate(
         id,
-        { ...UpdateProductDto, image: imageUrl },
+        {
+          ...UpdateProductDto,
+          image: imageUrl,
+          quantity: parseInt(UpdateProductDto.quantity),
+          promotionAmount: parseFloat(UpdateProductDto.promotionAmount),
+        },
         { new: true },
       );
       return updatedProduct;

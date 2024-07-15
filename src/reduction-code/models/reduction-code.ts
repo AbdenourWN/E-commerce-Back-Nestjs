@@ -3,7 +3,7 @@ import { Document } from 'mongoose';
 
 export type ReductionCodeDocument = ReductionCode & Document;
 
-@Schema()
+@Schema({ timestamps: true })
 export class ReductionCode {
   @Prop({ required: true, unique: true })
   code: string;

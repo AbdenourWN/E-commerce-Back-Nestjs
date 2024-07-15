@@ -11,6 +11,10 @@ export class UpdateProductDto {
   description: string;
 
   @IsOptional()
+  @ApiProperty({ required: false })
+  price: string;
+
+  @IsOptional()
   @ApiProperty({ required: false, default: '0' })
   quantity: string;
 
@@ -33,7 +37,7 @@ export class UpdateProductDto {
   @ApiProperty({ required: false, default: '0' })
   promotionAmount: string;
 
-  @IsOptional()
+ /*  @IsOptional()
   @ApiProperty({ required: false })
-  brand: string;
+  brand: string; */
 }

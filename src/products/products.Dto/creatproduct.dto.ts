@@ -20,6 +20,10 @@ export class CreateProductDto {
 
   @IsNotEmpty()
   @ApiProperty()
+  price: string;
+
+  @IsNotEmpty()
+  @ApiProperty()
   subcategory: string;
 
   @ApiProperty({ type: 'string', format: 'binary' })
@@ -33,7 +37,7 @@ export class CreateProductDto {
   @ApiProperty()
   promotionAmount: string;
 
-  @IsNotEmpty()
+  /* @IsNotEmpty()
   @ApiProperty()
-  brand: string;
+  brand: string; */
 }

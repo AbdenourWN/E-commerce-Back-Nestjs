@@ -4,10 +4,13 @@ import { Model } from 'mongoose';
 import { Subcategory, SubcategoryDocument } from './models/sub-categories';
 import { CreateSubcategoryDto } from './sub-categories.Dto/create-sub-category.dto';
 import { UpdateSubcategoryDto } from './sub-categories.Dto/update-sub-category.dto';
+import { Category, CategoryDocument } from 'src/categories/models/categories';
 
 @Injectable()
 export class SubcategoryService {
   constructor(
+    @InjectModel(Category.name)
+    private readonly CategoryModel: Model<CategoryDocument>,
     @InjectModel(Subcategory.name)
     private readonly SubcategoryModel: Model<SubcategoryDocument>,
   ) {}
@@ -16,6 +19,23 @@ export class SubcategoryService {
     createSubcategoryDto: CreateSubcategoryDto,
   ): Promise<Subcategory> {
     try {
+      createSubcategoryDto.name = createSubcategoryDto.name.toLowerCase();
+      const exist = await this.SubcategoryModel.findOne({
+        name: createSubcategoryDto.name,
+      });
+      if (exist) {
+        throw new HttpException(
+          'subCategory Name already exists',
+          HttpStatus.CONFLICT,
+        );
+      }
+
+      const category = await this.CategoryModel.findById(
+        createSubcategoryDto.categoryId,
+      );
+      if (!category) {
+        throw new HttpException('Category not found', HttpStatus.NOT_FOUND);
+      }
       const subcategory = new this.SubcategoryModel(createSubcategoryDto);
       return await subcategory.save();
     } catch (error) {
@@ -52,6 +72,26 @@ export class SubcategoryService {
     updateSubcategoryDto: UpdateSubcategoryDto,
   ): Promise<Subcategory> {
     try {
+      if (updateSubcategoryDto.name) {
+        updateSubcategoryDto.name = updateSubcategoryDto.name.toLowerCase();
+        const exist = await this.SubcategoryModel.findOne({
+          name: updateSubcategoryDto.name,
+        });
+        if (exist && exist._id.toString() !== id) {
+          throw new HttpException(
+            'subCategory Name already exists',
+            HttpStatus.CONFLICT,
+          );
+        }
+      }
+      if (updateSubcategoryDto.categoryId) {
+        const category = await this.CategoryModel.findById(
+          updateSubcategoryDto.categoryId,
+        );
+        if (!category) {
+          throw new HttpException('Category not found', HttpStatus.NOT_FOUND);
+        }
+      }
       const subcategory = await this.SubcategoryModel.findByIdAndUpdate(
         id,
         updateSubcategoryDto,

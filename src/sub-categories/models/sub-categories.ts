@@ -3,9 +3,10 @@ import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
 export type SubcategoryDocument = Subcategory & Document;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Subcategory {
-  @Prop()
+  
+  @Prop({ unique: true })
   name: string;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Category' })

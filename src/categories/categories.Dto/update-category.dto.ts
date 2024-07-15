@@ -6,6 +6,7 @@ export class UpdateCategoryDto {
   @ApiProperty()
   name: string;
 
-  @ApiProperty({ type: 'string', format: 'binary' })
+  @IsOptional()
+  @ApiProperty({ type: 'string', format: 'binary',required: false })
   image: string;
 }

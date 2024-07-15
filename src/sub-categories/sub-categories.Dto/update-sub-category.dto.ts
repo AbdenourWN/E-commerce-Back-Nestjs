@@ -7,6 +7,6 @@ export class UpdateSubcategoryDto {
   name: string;
 
   @IsOptional()
-  @ApiProperty({ description: 'Category ID' })
+  @ApiProperty({ description: 'Category ID', required: false })
   categoryId: string;
 }

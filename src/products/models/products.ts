@@ -3,7 +3,7 @@ import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
 export type ProductDocument = Products & Document;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Products {
   @Prop()
   name: string;
@@ -28,6 +28,9 @@ export class Products {
 
   @Prop()
   promotionAmount: number;
+  
+  @Prop()
+  price: number;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Brand' })
   brand: mongoose.Types.ObjectId;

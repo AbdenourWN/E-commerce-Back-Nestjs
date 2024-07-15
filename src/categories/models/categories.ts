@@ -3,9 +3,9 @@ import { Document } from 'mongoose';
 
 export type CategoryDocument = Category & Document;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Category {
-  @Prop()
+  @Prop({ unique: true })
   name: string;
 
   @Prop()

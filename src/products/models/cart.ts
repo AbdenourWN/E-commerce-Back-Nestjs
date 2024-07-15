@@ -5,7 +5,7 @@ import { Products } from './products';
 import { User } from 'src/auth/model/users';
 export type CartDocumenet = Cart & Document;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Cart {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   user: User;

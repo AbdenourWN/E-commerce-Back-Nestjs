@@ -3,7 +3,7 @@ import { Document } from 'mongoose';
 
 export type SettingsDocument = Settings & Document;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Settings {
   @Prop({ required: true })
   facebookUrl: string;

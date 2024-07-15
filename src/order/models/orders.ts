@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { ShippingAddress, ShippingAddressSchema } from './shipping-address';
 
-@Schema()
+@Schema({ timestamps: true })
 export class Order {
   @Prop()
   products: [

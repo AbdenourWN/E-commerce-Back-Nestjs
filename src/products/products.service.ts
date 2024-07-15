@@ -26,6 +26,7 @@ export class ProductsService {
         ...createProductDto,
         quantity: parseInt(createProductDto.quantity),
         promotionAmount: parseFloat(createProductDto.promotionAmount),
+        price: parseFloat(createProductDto.price),
         image: imageUrl,
       });
 
@@ -78,6 +79,7 @@ export class ProductsService {
           image: imageUrl,
           quantity: parseInt(UpdateProductDto.quantity),
           promotionAmount: parseFloat(UpdateProductDto.promotionAmount),
+          price: parseFloat(UpdateProductDto.price),
         },
         { new: true },
       );

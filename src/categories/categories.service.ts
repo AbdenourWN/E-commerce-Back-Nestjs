@@ -6,11 +6,17 @@ import { CreateCategoryDto } from './categories.Dto/create-category.dto';
 import { UpdateCategoryDto } from './categories.Dto/update-category.dto';
 import * as fs from 'fs';
 import * as path from 'path';
+import {
+  Subcategory,
+  SubcategoryDocument,
+} from 'src/sub-categories/models/sub-categories';
 @Injectable()
 export class CategoryService {
   constructor(
     @InjectModel(Category.name)
     private readonly CategoryModel: Model<CategoryDocument>,
+    @InjectModel(Subcategory.name)
+    private readonly SubcategoryModel: Model<SubcategoryDocument>,
   ) {}
 
   async create(
@@ -18,11 +24,18 @@ export class CategoryService {
     file: Express.Multer.File,
   ): Promise<Category> {
     try {
+      const name = createCategoryDto.name.toLowerCase();
+      const exist = await this.CategoryModel.findOne({
+        name,
+      });
+      if (exist) {
+        throw new HttpException('Category already exists', HttpStatus.CONFLICT);
+      }
       const imageUrl = file
         ? `${process.env.baseURL}/uploads/${file.filename}`
         : null;
       const category = new this.CategoryModel({
-        ...createCategoryDto,
+        name,
         image: imageUrl,
       });
       return await category.save();
@@ -61,6 +74,18 @@ export class CategoryService {
       if (!category) {
         throw new HttpException('Category not found', HttpStatus.NOT_FOUND);
       }
+      if (updateCategoryDto.name) {
+        updateCategoryDto.name = updateCategoryDto.name.toLowerCase();
+        const exist = await this.CategoryModel.findOne({
+          name: updateCategoryDto.name,
+        });
+        if (exist && exist._id.toString() !== id) {
+          throw new HttpException(
+            'Category Name already exists',
+            HttpStatus.CONFLICT,
+          );
+        }
+      }
       if (category.image && file) {
         this.deleteImage(category.image);
       }
@@ -87,6 +112,7 @@ export class CategoryService {
       if (result.image) {
         this.deleteImage(result.image);
       }
+      await this.SubcategoryModel.deleteMany({ categoryId: result._id });
       return 'Category deleted successfully';
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);

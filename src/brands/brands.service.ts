@@ -18,6 +18,16 @@ export class BrandService {
     file: Express.Multer.File,
   ): Promise<Brand> {
     try {
+      createBrandDto.name = createBrandDto.name.toLowerCase();
+      const exist = await this.BrandModel.findOne({
+        name: createBrandDto.name,
+      });
+      if (exist) {
+        throw new HttpException(
+          'Brand Name already exists',
+          HttpStatus.CONFLICT,
+        );
+      }
       const imageUrl = file
         ? `${process.env.baseURL}/uploads/${file.filename}`
         : null;
@@ -60,6 +70,18 @@ export class BrandService {
       const brand = await this.BrandModel.findById(id);
       if (!brand) {
         throw new HttpException('Brand not found', HttpStatus.NOT_FOUND);
+      }
+      if (updateBrandDto.name) {
+        updateBrandDto.name = updateBrandDto.name.toLowerCase();
+        const exist = await this.BrandModel.findOne({
+          name: updateBrandDto.name,
+        });
+        if (exist && exist._id.toString() !== id) {
+          throw new HttpException(
+            'Brand Name already exists',
+            HttpStatus.CONFLICT,
+          );
+        }
       }
       if (brand.image && file) {
         this.deleteImage(brand.image);

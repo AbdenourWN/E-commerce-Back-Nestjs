@@ -3,7 +3,7 @@ import { Document } from 'mongoose';
 
 export type BrandDocument = Brand & Document;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Brand {
   @Prop()
   name: string;

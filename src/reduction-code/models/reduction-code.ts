@@ -11,9 +11,6 @@ export class ReductionCode {
   @Prop({ required: true })
   discountPercentage: number;
 
-  @Prop({ required: true, default: Date.now })
-  createdAt: Date;
-
   @Prop()
   expirationDate: Date;
 

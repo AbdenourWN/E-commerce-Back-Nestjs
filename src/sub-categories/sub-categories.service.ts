@@ -5,6 +5,7 @@ import { Subcategory, SubcategoryDocument } from './models/sub-categories';
 import { CreateSubcategoryDto } from './sub-categories.Dto/create-sub-category.dto';
 import { UpdateSubcategoryDto } from './sub-categories.Dto/update-sub-category.dto';
 import { Category, CategoryDocument } from 'src/categories/models/categories';
+import { ProductDocument, Products } from 'src/products/models/products';
 
 @Injectable()
 export class SubcategoryService {
@@ -13,6 +14,8 @@ export class SubcategoryService {
     private readonly CategoryModel: Model<CategoryDocument>,
     @InjectModel(Subcategory.name)
     private readonly SubcategoryModel: Model<SubcategoryDocument>,
+    @InjectModel(Products.name)
+    private readonly ProductModel: Model<ProductDocument>,
   ) {}
 
   async create(
@@ -114,6 +117,10 @@ export class SubcategoryService {
       if (!result) {
         throw new HttpException('Subcategory not found', HttpStatus.NOT_FOUND);
       }
+      await this.ProductModel.updateMany(
+        { subcategory: result._id },
+        { $set: { subcategory: null } },
+      );
       return 'Subcategory deleted successfully';
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);

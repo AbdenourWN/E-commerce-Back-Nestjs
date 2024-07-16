@@ -14,6 +14,4 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   @IsNotEmpty()
   @ApiProperty()
   address?: string;
-
-  _id?;
 }

@@ -7,5 +7,5 @@ export class CreateBrandDto {
   name: string;
 
   @ApiProperty({ type: 'string', format: 'binary' })
-  image: any;
+  image: string;
 }

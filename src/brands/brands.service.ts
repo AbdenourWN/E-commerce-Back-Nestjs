@@ -6,11 +6,14 @@ import { CreateBrandDto } from './brands.Dto/create-brand.dto';
 import { UpdateBrandDto } from './brands.Dto/update-brand.dto';
 import * as fs from 'fs';
 import * as path from 'path';
+import { ProductDocument, Products } from 'src/products/models/products';
 
 @Injectable()
 export class BrandService {
   constructor(
     @InjectModel(Brand.name) private readonly BrandModel: Model<BrandDocument>,
+    @InjectModel(Products.name)
+    private readonly ProductModel: Model<ProductDocument>,
   ) {}
 
   async create(
@@ -111,6 +114,10 @@ export class BrandService {
       if (brand.image) {
         this.deleteImage(brand.image);
       }
+      await this.ProductModel.updateMany(
+        { brand: brand._id },
+        { $set: { brand: null } },
+      );
       return 'Brand deleted successfully';
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);

@@ -26,18 +26,27 @@ export class UpdateProductDto {
   @ApiProperty({ required: false })
   subcategory: string;
 
+  @IsOptional()
   @ApiProperty({ type: 'string', format: 'binary', required: false })
   image: Express.Multer.File;
 
   @IsOptional()
-  @ApiProperty({ required: false })
+  @ApiProperty({ required: false, default: false })
   promotion: boolean;
 
   @IsOptional()
   @ApiProperty({ required: false, default: '0' })
   promotionAmount: string;
 
- /*  @IsOptional()
+  @IsOptional()
   @ApiProperty({ required: false })
-  brand: string; */
+  brand: string;
+
+  @IsOptional()
+  @ApiProperty({ required: false, type: [String] })
+  sizes: string[];
+
+  @IsOptional()
+  @ApiProperty({ required: false, type: [String] })
+  colors: string[];
 }

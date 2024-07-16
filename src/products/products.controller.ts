@@ -76,4 +76,19 @@ export class ProductsController {
   async delete(@Param('id') id: string) {
     return this.productsService.deleteProduct(id);
   }
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.Admin)
+  @ApiBearerAuth()
+  @Put('softDelete/:id')
+  async softDelete(@Param('id') id: string) {
+    return this.productsService.softDeleteProduct(id);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.Admin)
+  @ApiBearerAuth()
+  @Put('restore/:id')
+  async restore(@Param('id') id: string) {
+    return this.productsService.restoreProduct(id);
+  }
 }

@@ -10,6 +10,7 @@ import {
   Subcategory,
   SubcategoryDocument,
 } from 'src/sub-categories/models/sub-categories';
+import { ProductDocument, Products } from 'src/products/models/products';
 @Injectable()
 export class CategoryService {
   constructor(
@@ -17,6 +18,8 @@ export class CategoryService {
     private readonly CategoryModel: Model<CategoryDocument>,
     @InjectModel(Subcategory.name)
     private readonly SubcategoryModel: Model<SubcategoryDocument>,
+    @InjectModel(Products.name)
+    private readonly ProductModel: Model<ProductDocument>,
   ) {}
 
   async create(
@@ -113,6 +116,10 @@ export class CategoryService {
         this.deleteImage(result.image);
       }
       await this.SubcategoryModel.deleteMany({ categoryId: result._id });
+      await this.ProductModel.updateMany(
+        { category: result._id },
+        { $set: { category: null, subcategory: null } },
+      );
       return 'Category deleted successfully';
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);

@@ -28,12 +28,24 @@ export class Products {
 
   @Prop()
   promotionAmount: number;
-  
+
   @Prop()
   price: number;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Brand' })
   brand: mongoose.Types.ObjectId;
+
+  @Prop([String])
+  sizes: string[];
+
+  @Prop([String])
+  colors: string[];
+
+  @Prop({ default: false })
+  deleted: boolean;
+
+  @Prop({ default: null })
+  deletedAt: Date;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Products);

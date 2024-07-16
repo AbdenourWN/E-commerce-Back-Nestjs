@@ -6,12 +6,18 @@ import { CreateProductDto } from './products.Dto/creatproduct.dto';
 import { UpdateProductDto } from './products.Dto/upadateProduct.dto';
 import * as fs from 'fs';
 import * as path from 'path';
+import {
+  Subcategory,
+  SubcategoryDocument,
+} from 'src/sub-categories/models/sub-categories';
 
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectModel(Products.name)
     private readonly ProductModel: Model<ProductDocument>,
+    @InjectModel(Subcategory.name)
+    private readonly SubcategoryModel: Model<SubcategoryDocument>,
   ) {}
 
   async create(
@@ -22,6 +28,18 @@ export class ProductsService {
       const imageUrl = file
         ? `${process.env.baseURL}/uploads/${file.filename}`
         : null;
+      const subcategory = await this.SubcategoryModel.findById(
+        createProductDto.subcategory,
+      );
+      if (
+        !subcategory ||
+        subcategory.categoryId.toString() !== createProductDto.category
+      ) {
+        throw new HttpException(
+          'Subcategory not related to category chosen',
+          HttpStatus.NOT_FOUND,
+        );
+      }
       const createdProduct = new this.ProductModel({
         ...createProductDto,
         quantity: parseInt(createProductDto.quantity),
@@ -37,7 +55,7 @@ export class ProductsService {
   }
 
   async getAll(): Promise<Products[]> {
-    return this.ProductModel.find()
+    return this.ProductModel.find({ deleted: false })
       .populate('category')
       .populate('subcategory')
       .populate('brand')
@@ -45,7 +63,7 @@ export class ProductsService {
   }
 
   async getProductbyId(id: string): Promise<Products> {
-    const product = await this.ProductModel.findById(id)
+    const product = await this.ProductModel.findOne({ _id: id, deleted: false })
       .populate('category')
       .populate('subcategory')
       .populate('brand')
@@ -62,9 +80,26 @@ export class ProductsService {
     file: Express.Multer.File,
   ): Promise<Products> {
     try {
-      const product = await this.ProductModel.findById(id);
+      const product = await this.ProductModel.findOne({
+        _id: id,
+        deleted: false,
+      });
       if (!product) {
         throw new HttpException('Product not found', HttpStatus.NOT_FOUND);
+      }
+      if (UpdateProductDto.subcategory) {
+        const subcategory = await this.SubcategoryModel.findById(
+          UpdateProductDto.subcategory,
+        );
+        if (
+          !subcategory ||
+          subcategory.categoryId.toString() !== product.category.toString()
+        ) {
+          throw new HttpException(
+            'Subcategory not found',
+            HttpStatus.NOT_FOUND,
+          );
+        }
       }
       if (product.image && file) {
         this.deleteImage(product.image);
@@ -84,6 +119,41 @@ export class ProductsService {
         { new: true },
       );
       return updatedProduct;
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  async softDeleteProduct(id: string): Promise<string> {
+    try {
+      const product = await this.ProductModel.findOneAndUpdate(
+        { _id: id, deleted: false },
+        { deleted: true, deletedAt: new Date() },
+        { new: true },
+      ).exec();
+      if (!product) {
+        throw new HttpException('Product not found', HttpStatus.NOT_FOUND);
+      }
+      return 'Product soft deleted successfully';
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  async restoreProduct(id: string): Promise<string> {
+    try {
+      const product = await this.ProductModel.findOneAndUpdate(
+        { _id: id, deleted: true },
+        { deleted: false, deletedAt: null },
+        { new: true },
+      ).exec();
+      if (!product) {
+        throw new HttpException(
+          'Product not found or not deleted',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+      return 'Product restored successfully';
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }

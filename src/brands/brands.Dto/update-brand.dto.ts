@@ -7,5 +7,5 @@ export class UpdateBrandDto {
   name: string;
 
   @ApiProperty({ type: 'string', format: 'binary' })
-  image: any;
+  image: string;
 }

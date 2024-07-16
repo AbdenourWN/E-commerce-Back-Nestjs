@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsOptional,
   IsNumber,
@@ -12,13 +13,16 @@ export class UpdateReductionCodeDto {
   @IsNumber()
   @Min(0)
   @Max(100)
+  @ApiProperty()
   discountPercentage: number;
 
   @IsOptional()
   @IsDate()
+  @ApiProperty()
   expirationDate: Date;
 
   @IsOptional()
   @IsBoolean()
+  @ApiProperty()
   isActive: boolean;
 }

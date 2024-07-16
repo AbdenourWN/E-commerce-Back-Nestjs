@@ -37,7 +37,15 @@ export class CreateProductDto {
   @ApiProperty()
   promotionAmount: string;
 
-  /* @IsNotEmpty()
+  @IsNotEmpty()
   @ApiProperty()
-  brand: string; */
+  brand: string;
+
+  @IsNotEmpty()
+  @ApiProperty({ type: [String] })
+  sizes: string[];
+
+  @IsNotEmpty()
+  @ApiProperty({ type: [String] })
+  colors: string[];
 }

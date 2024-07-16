@@ -31,5 +31,4 @@ export class CreateUserDto {
   @ApiProperty()
   address: string;
 
-  _id;
 }

@@ -15,6 +15,15 @@ export class ReductionCodeService {
   async createReductionCode(
     createReductionCodeDto: CreateReductionCodeDto,
   ): Promise<ReductionCode> {
+    if (
+      createReductionCodeDto.expirationDate &&
+      createReductionCodeDto.expirationDate <= new Date()
+    ) {
+      throw new HttpException(
+        'Expiration date must be later than today',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     const newReductionCode = new this.reductionCodeModel(
       createReductionCodeDto,
     );
@@ -55,6 +64,15 @@ export class ReductionCodeService {
     updateReductionCodeDto: UpdateReductionCodeDto,
   ): Promise<ReductionCode> {
     try {
+      if (
+        updateReductionCodeDto.expirationDate &&
+        updateReductionCodeDto.expirationDate <= new Date()
+      ) {
+        throw new HttpException(
+          'Expiration date must be later than the current date',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
       const updatedReductionCode =
         await this.reductionCodeModel.findOneAndUpdate(
           { code },

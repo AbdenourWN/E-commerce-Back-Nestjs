@@ -54,6 +54,14 @@ export class AuthController {
     return this.authService.getAllUsers();
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiBearerAuth()
+  @Roles(Role.Admin)
+  @Get('admin/user/:id')
+  async getUserById(@Param('id') id: string) {
+    return this.authService.getUserById(id);
+  }
+
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @Put('update/:id')
@@ -62,7 +70,12 @@ export class AuthController {
     @Body() updateUserDto: UpdateUserDto,
     @Request() req,
   ) {
-    if (req.user.id !== id && !req.user.roles.includes('admin')) {
+    if ( 
+      (req.user.id !== id && !req.user.roles.includes('admin')) ||
+      (req.user.id === id &&
+        !req.user.roles.includes('admin') &&
+        updateUserDto.roles)
+    ) {
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
     }
     return this.authService.updateUserByUser(id, updateUserDto);

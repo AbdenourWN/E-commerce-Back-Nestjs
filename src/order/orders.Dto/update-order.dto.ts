@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ShippingAddressDto } from './shipping-address.dto';
 import * as mongoose from 'mongoose';
-import { IsOptional } from 'class-validator';
+import { IsDateString, IsOptional } from 'class-validator';
 
 export class UpdateOrderDto {
   @IsOptional()
@@ -30,6 +30,7 @@ export class UpdateOrderDto {
   totalAmount?: number;
 
   @IsOptional()
+  @IsDateString()
   @ApiProperty({ required: false })
   orderDate?: Date;
 

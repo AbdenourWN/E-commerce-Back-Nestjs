@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional } from 'class-validator';
+import { Price } from '../models/products';
 
 export class UpdateProductDto {
   @IsOptional()
@@ -12,7 +13,7 @@ export class UpdateProductDto {
 
   @IsOptional()
   @ApiProperty({ required: false })
-  price: string;
+  price: Price[];
 
   @IsOptional()
   @ApiProperty({ required: false, default: '0' })

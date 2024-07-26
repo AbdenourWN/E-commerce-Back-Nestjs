@@ -140,10 +140,9 @@ export class AuthService {
     const transporter = nodemailer.createTransport({
       host: 'sandbox.smtp.mailtrap.io',
       port: 587,
-      secure: false,
       auth: {
-        user: 'ec6f8831002ef9',
-        pass: 'dcff536a347ad8',
+        user: '4c8e0428acf957',
+        pass: '2bc167bb28f502',
       },
     });
     const mailOptions = {

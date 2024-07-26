@@ -44,7 +44,6 @@ export class ProductsService {
         ...createProductDto,
         quantity: parseInt(createProductDto.quantity),
         promotionAmount: parseFloat(createProductDto.promotionAmount),
-        price: parseFloat(createProductDto.price),
         image: imageUrl,
       });
 
@@ -55,6 +54,13 @@ export class ProductsService {
   }
 
   async getAll(): Promise<Products[]> {
+    return this.ProductModel.find()
+      .populate('category')
+      .populate('subcategory')
+      .populate('brand')
+      .exec();
+  }
+  async getAllAvailable(): Promise<Products[]> {
     return this.ProductModel.find({ deleted: false })
       .populate('category')
       .populate('subcategory')
@@ -87,20 +93,6 @@ export class ProductsService {
       if (!product) {
         throw new HttpException('Product not found', HttpStatus.NOT_FOUND);
       }
-      if (UpdateProductDto.subcategory) {
-        const subcategory = await this.SubcategoryModel.findById(
-          UpdateProductDto.subcategory,
-        );
-        if (
-          !subcategory ||
-          subcategory.categoryId.toString() !== product.category.toString()
-        ) {
-          throw new HttpException(
-            'Subcategory not found',
-            HttpStatus.NOT_FOUND,
-          );
-        }
-      }
       if (product.image && file) {
         this.deleteImage(product.image);
       }
@@ -114,7 +106,6 @@ export class ProductsService {
           image: imageUrl,
           quantity: parseInt(UpdateProductDto.quantity),
           promotionAmount: parseFloat(UpdateProductDto.promotionAmount),
-          price: parseFloat(UpdateProductDto.price),
         },
         { new: true },
       );

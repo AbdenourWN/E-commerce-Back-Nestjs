@@ -8,6 +8,7 @@ import {
   IsOptional,
   IsBoolean,
   IsDate,
+  IsDateString,
 } from 'class-validator';
 
 export class CreateReductionCodeDto {
@@ -24,7 +25,7 @@ export class CreateReductionCodeDto {
   discountPercentage: number;
 
   @IsOptional()
-  @IsDate()
+  @IsDateString()
   @ApiProperty()
   expirationDate: Date;
 

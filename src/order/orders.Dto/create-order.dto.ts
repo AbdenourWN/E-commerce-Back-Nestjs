@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ShippingAddressDto } from './shipping-address.dto';
-import { IsDate, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsDate, IsDateString, IsNotEmpty, IsNumber } from 'class-validator';
 import * as mongoose from 'mongoose';
 
 export class CreateOrderDto {
@@ -31,7 +31,7 @@ export class CreateOrderDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsDate()
+  @IsDateString()
   orderDate: Date;
 
   @IsNotEmpty()

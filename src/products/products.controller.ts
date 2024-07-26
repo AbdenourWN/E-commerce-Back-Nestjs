@@ -41,10 +41,17 @@ export class ProductsController {
   ) {
     return this.productsService.create(createProductDto, file);
   }
-
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.Admin)
+  @ApiBearerAuth()
   @Get()
   async getAll() {
     return this.productsService.getAll();
+  }
+
+  @Get('available')
+  async getAllAvailable() {
+    return this.productsService.getAllAvailable();
   }
 
   @Get(':id')

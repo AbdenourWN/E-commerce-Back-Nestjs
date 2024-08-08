@@ -4,17 +4,31 @@ import { Model } from 'mongoose';
 import { Order, OrderDocument } from './models/orders';
 import { CreateOrderDto } from './orders.Dto/create-order.dto';
 import { UpdateOrderDto } from './orders.Dto/update-order.dto';
+import { InvoiceService } from '../invoice/invoice.service';
 
 @Injectable()
 export class OrderService {
   constructor(
     @InjectModel(Order.name) private readonly orderModel: Model<OrderDocument>,
+    private readonly invoiceService: InvoiceService,
   ) {}
 
   async createOrder(createOrderDto: CreateOrderDto): Promise<Order> {
     const newOrder = new this.orderModel(createOrderDto);
     try {
-      return await newOrder.save();
+      // Save the order
+      const savedOrder = await newOrder.save();
+      
+      // Create an invoice for the saved order
+      await this.invoiceService.create({
+        orderId: savedOrder._id,
+        dateCreated: new Date(),
+        amount: savedOrder.totalAmount,
+        tax: this.calculateTax(savedOrder.totalAmount), 
+        total: savedOrder.totalAmount + this.calculateTax(savedOrder.totalAmount),
+      });
+
+      return savedOrder;
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -22,7 +36,11 @@ export class OrderService {
 
   async getAllOrders(): Promise<Order[]> {
     try {
-      return await this.orderModel.find().exec();
+      return await this.orderModel
+        .find()
+        .populate({ path: 'userId', model: 'User' })
+        .populate({ path: 'shippingAddressId', model: 'ShippingAddress' })
+        .exec();
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -30,7 +48,11 @@ export class OrderService {
 
   async getOrderById(id: string): Promise<Order> {
     try {
-      const order = await this.orderModel.findById(id).exec();
+      const order = await this.orderModel
+        .findById(id)
+        .populate({ path: 'userId', model: 'User' })
+        .populate({ path: 'shippingAddressId', model: 'ShippingAddress' })
+        .exec();
       if (!order) {
         throw new HttpException('Order not found', HttpStatus.NOT_FOUND);
       }
@@ -69,5 +91,10 @@ export class OrderService {
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+  }
+
+  private calculateTax(amount: number): number {
+    // Implement your tax calculation logic here
+    return amount * 0.1; // Example: 10% tax
   }
 }

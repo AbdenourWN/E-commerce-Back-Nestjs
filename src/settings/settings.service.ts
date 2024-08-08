@@ -42,8 +42,7 @@ export class SettingsService {
   async update(
     id: string,
     updateSettingsDto: CreateSettingsDto,
-
-    websiteLogo?: Express.Multer.File,
+    websiteLogo: Express.Multer.File,
   ): Promise<Settings> {
     try {
       const settings = await this.settingsModel.findById(id);
@@ -82,8 +81,7 @@ export class SettingsService {
 
   async updateOrCreate(
     updateSettingsDto: CreateSettingsDto,
-
-    websiteLogo?: Express.Multer.File,
+    websiteLogo: Express.Multer.File,
   ): Promise<Settings> {
     const existingSettings = await this.settingsModel.findOne().exec();
     if (existingSettings) {

@@ -69,7 +69,7 @@ export class ProductsService {
   }
 
   async getProductbyId(id: string): Promise<Products> {
-    const product = await this.ProductModel.findOne({ _id: id, deleted: false })
+    const product = await this.ProductModel.findOne({ _id: id })
       .populate('category')
       .populate('subcategory')
       .populate('brand')
@@ -88,7 +88,6 @@ export class ProductsService {
     try {
       const product = await this.ProductModel.findOne({
         _id: id,
-        deleted: false,
       });
       if (!product) {
         throw new HttpException('Product not found', HttpStatus.NOT_FOUND);

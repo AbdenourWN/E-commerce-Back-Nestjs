@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional } from 'class-validator';
+import * as mongoose from 'mongoose';
 
-export class ShippingAddressDto {
+export class CreateShippingAddressDto {
   @IsNotEmpty()
   @ApiProperty()
   firstName: string;
@@ -29,6 +30,10 @@ export class ShippingAddressDto {
   @IsNotEmpty()
   @ApiProperty()
   zipCode: string;
+
+  @IsNotEmpty()
+  @ApiProperty({ type: mongoose.Schema.Types.ObjectId, required: true })
+  userId: mongoose.Schema.Types.ObjectId;
 
   @IsNotEmpty()
   @ApiProperty()

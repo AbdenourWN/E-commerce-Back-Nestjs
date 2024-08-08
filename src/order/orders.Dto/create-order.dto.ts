@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ShippingAddressDto } from './shipping-address.dto';
-import { IsDate, IsDateString, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsDateString, IsEnum, IsNotEmpty, IsNumber } from 'class-validator';
 import * as mongoose from 'mongoose';
+import { OrderStatus, PaymentMethod, PaymentStatus } from '../models/orders';
 
 export class CreateOrderDto {
   @IsNotEmpty()
@@ -18,7 +18,7 @@ export class CreateOrderDto {
       { productId: '60d5ec49f69d0d26e8e8f528', quantity: 1, price: 100 },
     ],
   })
-  products?: {
+  products: {
     productId: mongoose.Types.ObjectId;
     quantity: number;
     price: number;
@@ -31,14 +31,29 @@ export class CreateOrderDto {
 
   @ApiProperty()
   @IsNotEmpty()
+  @IsEnum(PaymentStatus)
+  paymentStatus: PaymentStatus;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsEnum(PaymentMethod)
+  paymentMethod: PaymentMethod;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsEnum(OrderStatus)
+  orderStatus: OrderStatus;
+
+  @ApiProperty()
+  @IsNotEmpty()
   @IsDateString()
   orderDate: Date;
 
   @IsNotEmpty()
-  @ApiProperty({ type: mongoose.Schema.Types.ObjectId, required: false })
-  userId?: mongoose.Schema.Types.ObjectId;
+  @ApiProperty({ type: mongoose.Schema.Types.ObjectId })
+  userId: mongoose.Schema.Types.ObjectId;
 
-  @ApiProperty({ type: ShippingAddressDto })
   @IsNotEmpty()
-  shippingAddress: ShippingAddressDto;
+  @ApiProperty({ type: mongoose.Schema.Types.ObjectId })
+  shippingAddressId: mongoose.Schema.Types.ObjectId;
 }

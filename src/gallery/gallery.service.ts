@@ -19,6 +19,12 @@ export class GalleryService {
     file: Express.Multer.File,
   ): Promise<Gallery> {
     try {
+      const gallery = await this.galleryModel.findOne({
+        title: createGalleryDto.title,
+      });
+      if (gallery) {
+        throw new HttpException('Gallery already exists', HttpStatus.CONFLICT);
+      }
       const imageUrl = file
         ? `${process.env.baseURL}/uploads/${file.filename}`
         : null;

@@ -12,6 +12,8 @@ import { GalleryModule } from './gallery/gallery.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { SettingsModule } from './settings/settings.module';
+import { ShippingAddressModule } from './shipping-address/shipping-address.module';
+import { InvoiceModule } from './invoice/invoice.module';
 
 @Module({
   imports: [
@@ -36,6 +38,8 @@ import { SettingsModule } from './settings/settings.module';
     GalleryModule,
     SettingsModule,
     AuthModule,
+    ShippingAddressModule,
+    InvoiceModule,
   ],
   controllers: [],
   providers: [],

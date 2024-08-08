@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ShippingAddressDto } from './shipping-address.dto';
 import * as mongoose from 'mongoose';
-import { IsDateString, IsOptional } from 'class-validator';
+import { IsDateString, IsEnum, IsOptional, IsNumber } from 'class-validator';
+import { OrderStatus, PaymentMethod, PaymentStatus } from '../models/orders';
 
 export class UpdateOrderDto {
   @IsOptional()
@@ -27,7 +27,23 @@ export class UpdateOrderDto {
 
   @IsOptional()
   @ApiProperty({ required: false })
+  @IsNumber()
   totalAmount?: number;
+
+  @IsOptional()
+  @IsEnum(PaymentStatus)
+  @ApiProperty({ required: false })
+  paymentStatus?: PaymentStatus;
+
+  @IsOptional()
+  @IsEnum(PaymentMethod)
+  @ApiProperty({ required: false })
+  paymentMethod?: PaymentMethod;
+
+  @IsOptional()
+  @IsEnum(OrderStatus)
+  @ApiProperty({ required: false })
+  orderStatus?: OrderStatus;
 
   @IsOptional()
   @IsDateString()
@@ -39,6 +55,6 @@ export class UpdateOrderDto {
   userId?: mongoose.Schema.Types.ObjectId;
 
   @IsOptional()
-  @ApiProperty({ type: ShippingAddressDto, required: false })
-  shippingAddress?: ShippingAddressDto;
+  @ApiProperty({ type: mongoose.Schema.Types.ObjectId, required: false })
+  shippingAddressId?: mongoose.Schema.Types.ObjectId;
 }

@@ -9,19 +9,15 @@ export class CreateOrderDto {
     type: [
       {
         productId: mongoose.Schema.Types.ObjectId,
-        quantity: Number,
-        price: Number,
       },
     ],
     isArray: true,
     example: [
-      { productId: '60d5ec49f69d0d26e8e8f528', quantity: 1, price: 100 },
+      { productId: '60d5ec49f69d0d26e8e8f528'},
     ],
   })
   products: {
-    productId: mongoose.Types.ObjectId;
-    quantity: number;
-    price: number;
+    productId: mongoose.Schema.Types.ObjectId;
   }[];
 
   @ApiProperty()
@@ -43,11 +39,6 @@ export class CreateOrderDto {
   @IsNotEmpty()
   @IsEnum(OrderStatus)
   orderStatus: OrderStatus;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsDateString()
-  orderDate: Date;
 
   @IsNotEmpty()
   @ApiProperty({ type: mongoose.Schema.Types.ObjectId })

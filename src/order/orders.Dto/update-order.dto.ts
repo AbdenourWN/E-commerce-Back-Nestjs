@@ -9,20 +9,14 @@ export class UpdateOrderDto {
     type: [
       {
         productId: mongoose.Schema.Types.ObjectId,
-        quantity: Number,
-        price: Number,
       },
     ],
     isArray: true,
     required: false,
-    example: [
-      { productId: '60d5ec49f69d0d26e8e8f528', quantity: 1, price: 100 },
-    ],
+    example: [{ productId: '60d5ec49f69d0d26e8e8f528' }],
   })
   products?: {
-    productId: mongoose.Types.ObjectId;
-    quantity: number;
-    price: number;
+    productId: mongoose.Schema.Types.ObjectId;
   }[];
 
   @IsOptional()
@@ -44,11 +38,6 @@ export class UpdateOrderDto {
   @IsEnum(OrderStatus)
   @ApiProperty({ required: false })
   orderStatus?: OrderStatus;
-
-  @IsOptional()
-  @IsDateString()
-  @ApiProperty({ required: false })
-  orderDate?: Date;
 
   @IsOptional()
   @ApiProperty({ type: mongoose.Schema.Types.ObjectId, required: false })

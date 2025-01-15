@@ -5,22 +5,12 @@ import * as mongoose from 'mongoose';
 export class UpdateInvoiceDto {
   @IsOptional()
   @ApiProperty({ type: mongoose.Schema.Types.ObjectId, required: false })
-  orderId?: mongoose.Schema.Types.ObjectId;
-
-  @IsOptional()
-  @ApiProperty({ required: false })
-  @IsDate()
-  dateCreated?: Date;
+  orderId?: mongoose.Types.ObjectId;
 
   @IsOptional()
   @ApiProperty({ required: false })
   @IsNumber()
   amount?: number;
-
-  @IsOptional()
-  @ApiProperty({ required: false })
-  @IsNumber()
-  tax?: number;
 
   @IsOptional()
   @ApiProperty({ required: false })

@@ -5,22 +5,12 @@ import * as mongoose from 'mongoose';
 export class CreateInvoiceDto {
   @IsNotEmpty()
   @ApiProperty({ type: mongoose.Schema.Types.ObjectId })
-  orderId: mongoose.Schema.Types.ObjectId;
-
-  @IsNotEmpty()
-  @ApiProperty()
-  @IsDate()
-  dateCreated: Date;
+  orderId: mongoose.Types.ObjectId;
 
   @IsNotEmpty()
   @ApiProperty()
   @IsNumber()
   amount: number;
-
-  @IsNotEmpty()
-  @ApiProperty()
-  @IsNumber()
-  tax: number;
 
   @IsNotEmpty()
   @ApiProperty()

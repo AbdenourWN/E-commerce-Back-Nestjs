@@ -62,6 +62,8 @@ export class ProductsService {
   }
   async getAllAvailable(): Promise<Products[]> {
     return this.ProductModel.find({ deleted: false })
+      .where('quantity')
+      .gt(0)
       .populate('category')
       .populate('subcategory')
       .populate('brand')

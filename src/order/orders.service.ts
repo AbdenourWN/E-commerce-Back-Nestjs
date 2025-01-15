@@ -5,12 +5,14 @@ import { Order, OrderDocument } from './models/orders';
 import { CreateOrderDto } from './orders.Dto/create-order.dto';
 import { UpdateOrderDto } from './orders.Dto/update-order.dto';
 import { InvoiceService } from '../invoice/invoice.service';
+import { SettingsService } from 'src/settings/settings.service';
 
 @Injectable()
 export class OrderService {
   constructor(
     @InjectModel(Order.name) private readonly orderModel: Model<OrderDocument>,
     private readonly invoiceService: InvoiceService,
+    private readonly settingsService: SettingsService,
   ) {}
 
   async createOrder(createOrderDto: CreateOrderDto): Promise<Order> {
@@ -18,14 +20,14 @@ export class OrderService {
     try {
       // Save the order
       const savedOrder = await newOrder.save();
-      
+      const settings = await this.settingsService.get();
+
       // Create an invoice for the saved order
       await this.invoiceService.create({
         orderId: savedOrder._id,
-        dateCreated: new Date(),
         amount: savedOrder.totalAmount,
-        tax: this.calculateTax(savedOrder.totalAmount), 
-        total: savedOrder.totalAmount + this.calculateTax(savedOrder.totalAmount),
+        total:
+          savedOrder.totalAmount + settings.deliveryPrice,
       });
 
       return savedOrder;
@@ -75,6 +77,12 @@ export class OrderService {
       if (!updatedOrder) {
         throw new HttpException('Order not found', HttpStatus.NOT_FOUND);
       }
+      const settings = await this.settingsService.get();
+      await this.invoiceService.updateByOrderId(id, {
+        amount: updatedOrder.totalAmount,
+        total: updatedOrder.totalAmount + settings.deliveryPrice,
+      });
+
       return updatedOrder;
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -87,14 +95,11 @@ export class OrderService {
       if (!result) {
         throw new HttpException('Order not found', HttpStatus.NOT_FOUND);
       }
+      await this.invoiceService.removeByOrderId(id);
+
       return 'Order deleted successfully';
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-  }
-
-  private calculateTax(amount: number): number {
-    // Implement your tax calculation logic here
-    return amount * 0.1; // Example: 10% tax
   }
 }

@@ -10,8 +10,6 @@ export enum PaymentStatus {
 }
 
 export enum PaymentMethod {
-  CREDIT_CARD = 'CREDIT_CARD',
-  PAYPAL = 'PAYPAL',
   BANK_TRANSFER = 'BANK_TRANSFER',
   CASH_ON_DELIVERY = 'CASH_ON_DELIVERY',
 }
@@ -28,16 +26,12 @@ export class Order {
   @Prop({
     type: [
       {
-        productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Products' },
-        quantity: { type: Number },
-        price: { type: Number },
+        productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Products' ,required: true},
       },
     ],
   })
   products: {
-    productId: mongoose.Types.ObjectId;
-    quantity: number;
-    price: number;
+    productId: mongoose.Schema.Types.ObjectId;
   }[];
 
   @Prop()
@@ -52,13 +46,14 @@ export class Order {
   @Prop()
   orderStatus: OrderStatus;
 
-  @Prop()
-  orderDate: Date;
-
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
   userId: mongoose.Schema.Types.ObjectId;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'ShippingAddress', required: true })
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'ShippingAddress',
+    required: true,
+  })
   shippingAddressId: mongoose.Schema.Types.ObjectId;
 }
 

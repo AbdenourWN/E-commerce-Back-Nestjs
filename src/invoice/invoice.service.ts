@@ -5,7 +5,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { model, Model, Schema, Types } from 'mongoose';
 import { CreateInvoiceDto } from './invoice.dto/create-invoice.dto';
 import { Invoice } from './models/invoice';
 import { UpdateInvoiceDto } from './invoice.dto/update-invoice.dto';
@@ -30,7 +30,14 @@ export class InvoiceService {
     try {
       const invoice = await this.invoiceModel
         .findById(id)
-        .populate({ path: 'orderId', model: 'Order' })
+        .populate({
+          path: 'orderId',
+          populate: [
+            { path: 'userId', model: 'User' },
+            { path: 'shippingAddressId', model: 'ShippingAddress' },
+          ],
+          model: 'Order',
+        })
         .exec();
       if (!invoice) {
         throw new NotFoundException('Invoice not found');
@@ -48,7 +55,14 @@ export class InvoiceService {
     try {
       const invoice = await this.invoiceModel
         .find()
-        .populate({ path: 'orderId', model: 'Order' })
+        .populate({
+          path: 'orderId',
+          populate: [
+            { path: 'userId', model: 'User' },
+            { path: 'shippingAddressId', model: 'ShippingAddress' },
+          ],
+          model: 'Order',
+        })
         .exec();
       return invoice;
     } catch (error) {
@@ -75,6 +89,32 @@ export class InvoiceService {
       throw new InternalServerErrorException('Error updating invoice');
     }
   }
+  async updateByOrderId(
+    id: string,
+    updateInvoiceDto: UpdateInvoiceDto,
+  ): Promise<Invoice> {
+    try {
+      if (!Types.ObjectId.isValid(id)) {
+        throw new BadRequestException('Invalid order ID format');
+      }
+
+      const orderIdObj = new Types.ObjectId(id);
+      const updatedInvoice = await this.invoiceModel
+        .findOneAndUpdate({ orderId: orderIdObj }, updateInvoiceDto, {
+          new: true,
+        })
+        .exec();
+      if (!updatedInvoice) {
+        throw new NotFoundException('Invoice not found');
+      }
+      return updatedInvoice;
+    } catch (error) {
+      if (error.name === 'CastError') {
+        throw new BadRequestException('Invalid order ID format');
+      }
+      throw new InternalServerErrorException('Error updating invoice');
+    }
+  }
 
   async remove(id: string): Promise<Invoice> {
     try {
@@ -88,6 +128,28 @@ export class InvoiceService {
     } catch (error) {
       if (error.name === 'CastError') {
         throw new BadRequestException('Invalid invoice ID format');
+      }
+      throw new InternalServerErrorException('Error deleting invoice');
+    }
+  }
+
+  async removeByOrderId(id: string): Promise<Invoice> {
+    try {
+      if (!Types.ObjectId.isValid(id)) {
+        throw new BadRequestException('Invalid order ID format');
+      }
+
+      const orderIdObj = new Types.ObjectId(id);
+      const removedInvoice = await this.invoiceModel
+        .findOneAndRemove({ orderId: orderIdObj })
+        .exec();
+      if (!removedInvoice) {
+        throw new NotFoundException('Invoice not found');
+      }
+      return removedInvoice;
+    } catch (error) {
+      if (error.name === 'CastError') {
+        throw new BadRequestException('Invalid order ID format');
       }
       throw new InternalServerErrorException('Error deleting invoice');
     }

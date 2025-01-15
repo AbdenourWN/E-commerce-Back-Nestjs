@@ -15,7 +15,6 @@ export class LocalStartegy extends PassportStrategy(Strategy) {
       passReqToCallback: true,
     });
   }
-
   async validate(
     request: Request,
     username: string,

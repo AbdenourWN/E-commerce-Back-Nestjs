@@ -8,6 +8,8 @@ The E-Commerce project is built using the NestJS framework, which provides a rob
 
 ## Tech Stack
 
+npm version 14
+
 The E-Commerce project REST API is built using the following technologies:
 
 - **Node.js**: The server-side environment for running JavaScript.
